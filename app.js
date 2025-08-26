@@ -5,7 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const http = require("http");
 require('dotenv').config(); // pour la configuration de .env
-const {connectToMongoDb}= require('./config/db')
+
+const { connectToMongoDb } = require("./config/db");
+
+
+
+
+// ensuite lancer le serveur
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -37,11 +43,13 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
-  res.render('error');
+  res.json('error');
 });
 
-const server = http.createServer(app);
-connectToMongoDb();
 const port = process.env.PORT || 5001;
-app.listen(port, () => console.log(`Server running on port ${port}`));
 
+// appeler la connexion à MongoDB AVANT de lancer le serveur
+connectToMongoDb();
+
+app.listen(port, () => console.log(` Server running on port ${port}`));
+// Ovicm7La1Yl4Kuoo

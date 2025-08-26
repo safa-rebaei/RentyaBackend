@@ -3,15 +3,11 @@ const mongoose = require("mongoose");
 module.exports.connectToMongoDb = async () => {
   mongoose.set("strictQuery", false);
   mongoose
-    .connect("mongodb+srv://safarebaei01:LMAPV7Rn3oxLtOkn@cluster0.k6jk5j8.mongodb.net/")
+    .connect("mongodb+srv://safarebaei01:Ovicm7La1Yl4Kuoo@cluster0.zlxtctv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
     .then(() => {
-      console.log("connect to db");
+      console.log(" Connected to MongoDB");
     })
     .catch((error) => {
-      console.log(error);
+      console.log("❌ MongoDB connection failed:", error.message);
     });
 };
-
-
-
-// LMAPV7Rn3oxLtOkn
