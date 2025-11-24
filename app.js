@@ -4,20 +4,22 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const http = require("http");
-require('dotenv').config(); // pour la configuration de .env
+const cors = require("cors");   // <-- AJOUT ICI
+require('dotenv').config();
 
 const { connectToMongoDb } = require("./config/db");
 
-
-
-
-// ensuite lancer le serveur
-
+// routes
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
+var usersRouter = require('./routes/userRouter');
+var osRouter  = require('./routes/osRouter');
 
 var app = express();
+
+// activer CORS
+app.use(cors()); 
+// si tu veux limiter à ton front uniquement :
+// app.use(cors({ origin: "http://localhost:3001" }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,14 +28,15 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// tes routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/osRouter', osRouter);
 
-// catch 404 and forward to error handler
+// catch 404
 app.use(function(req, res, next) {
   next(createError(404));
 });
@@ -48,8 +51,8 @@ app.use(function(err, req, res, next) {
 
 const port = process.env.PORT || 5001;
 
-// appeler la connexion à MongoDB AVANT de lancer le serveur
+// connexion Mongo
 connectToMongoDb();
 
+// démarrage serveur
 app.listen(port, () => console.log(` Server running on port ${port}`));
-// Ovicm7La1Yl4Kuoo
